@@ -1,4 +1,12 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
+import {Habilidad} from './habilidad.model';
+import {HabilidadesPersona} from './habilidades-persona.model';
+import {Documento} from './documento.model';
+import {SolicitudEmpresaPersona} from './solicitud-empresa-persona.model';
+import {Estado} from './estado.model';
+import {Ciudad} from './ciudad.model';
+import {Profesion} from './profesion.model';
+import {ProfesionPersona} from './profesion-persona.model';
 
 @model()
 export class Persona extends Entity {
@@ -61,6 +69,23 @@ export class Persona extends Entity {
   })
   perfil_profesional: string;
 
+  @hasMany(() => Habilidad, {through: {model: () => HabilidadesPersona}})
+  habilidades: Habilidad[];
+
+  @hasMany(() => Documento)
+  documentos: Documento[];
+
+  @hasMany(() => SolicitudEmpresaPersona)
+  solicitudEmpresaPersonas: SolicitudEmpresaPersona[];
+
+  @belongsTo(() => Estado)
+  estadoId: number;
+
+  @belongsTo(() => Ciudad)
+  ciudadId: number;
+
+  @hasMany(() => Profesion, {through: {model: () => ProfesionPersona}})
+  profesiones: Profesion[];
 
   constructor(data?: Partial<Persona>) {
     super(data);
